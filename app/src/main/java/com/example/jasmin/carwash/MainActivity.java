@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_history) {
             Intent historyIntent = new Intent(this, ViewHistoryActivity.class);
             startActivity(historyIntent);
+        } else if(id == R.id.nav_cars) {
+            Intent carsIntent = new Intent(this, ViewCarsActivity.class);
+            startActivity(carsIntent);
         } else if (id == R.id.nav_contact) {
 
         } else if (id == R.id.nav_about) {
