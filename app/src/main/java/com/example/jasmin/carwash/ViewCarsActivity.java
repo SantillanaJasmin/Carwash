@@ -4,12 +4,18 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ViewCarsActivity extends AppCompatActivity {
 
+    ArrayList<Car> carList;
+    CarAdapter carAdapter;
     RecyclerView rvCars;
 
     @Override
@@ -28,6 +34,19 @@ public class ViewCarsActivity extends AppCompatActivity {
             }
         });
 
+        carList = new ArrayList<>();
+        carList.add(new Car("Honda Civic", "ABC 123"));
+        carList.add(new Car("Toyota Fortuner", "DEF 456"));
+        carList.add(new Car("Toyota Innova", "GHI 789"));
+        carList.add(new Car("Mitsubishi Montero", "JKL 012"));
+        carList.add(new Car("Mitsubishi Mirage", "MNO 345"));
+
+        rvCars = (RecyclerView) findViewById(R.id.rvCars);
+        carAdapter = new CarAdapter(carList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rvCars.setLayoutManager(mLayoutManager);
+        rvCars.setAdapter(carAdapter);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,8 +55,6 @@ public class ViewCarsActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        rvCars = (RecyclerView) findViewById(R.id.rvCars);
     }
 
 }
