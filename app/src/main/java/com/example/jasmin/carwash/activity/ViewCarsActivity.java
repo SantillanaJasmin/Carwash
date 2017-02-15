@@ -1,4 +1,4 @@
-package com.example.jasmin.carwash;
+package com.example.jasmin.carwash.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,7 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
+
+import com.example.jasmin.carwash.model.Car;
+import com.example.jasmin.carwash.adapter.CarAdapter;
+import com.example.jasmin.carwash.R;
 
 import java.util.ArrayList;
 

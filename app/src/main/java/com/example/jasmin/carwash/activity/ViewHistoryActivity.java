@@ -1,27 +1,24 @@
-package com.example.jasmin.carwash;
+package com.example.jasmin.carwash.activity;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+
+import com.example.jasmin.carwash.model.History;
+import com.example.jasmin.carwash.adapter.HistoryAdapter;
+import com.example.jasmin.carwash.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,7 +61,6 @@ public class ViewHistoryActivity extends AppCompatActivity {
         GetHistoryAsyncTask getHistoryAsyncTask = new GetHistoryAsyncTask(this);
         try {
             String s = getHistoryAsyncTask.execute().get();
-//            Toast.makeText(this, "Array Object: " + s, Toast.LENGTH_SHORT).show();
             populateHistoryRecyclerView(s);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -86,6 +82,7 @@ public class ViewHistoryActivity extends AppCompatActivity {
 
             for(int i = 0; i < historyArray.length(); i++) {
                 int control_number = 0;
+                double control_price = 0;
                 String date = "";
                 Date control_date = null;
 
@@ -93,19 +90,21 @@ public class ViewHistoryActivity extends AppCompatActivity {
 
                 try {
                     control_number = history.getInt("control_no");
-                    date = history.getString("schedule");
 
+                    date = history.getString("schedule");
                     TimeZone utc = TimeZone.getTimeZone("UTC");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                     sdf.setTimeZone(utc);
                     GregorianCalendar cal = new GregorianCalendar(utc);
                     cal.setTime(sdf.parse(date));
                     control_date = cal.getTime();
+
+                    control_price = history.getDouble("total");
                 } catch (ParseException e) {
                     e.printStackTrace();
                     continue;
                 } finally {
-                    historyList.add(new History(control_number, control_date));
+                    historyList.add(new History(control_number, control_date, control_price));
                 }
             }
         } catch (JSONException e) {
@@ -152,7 +151,6 @@ public class ViewHistoryActivity extends AppCompatActivity {
             try {
                 response = client.newCall(request).execute();
                 sResult = response.body().string();
-//                return response.body().string();
                 return sResult;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -166,44 +164,6 @@ public class ViewHistoryActivity extends AppCompatActivity {
             super.onPostExecute(s);
 
             pdLoading.dismiss();
-
-//            ArrayList<History> historyList = new ArrayList<>();
-//            try {
-//                JSONObject object = new JSONObject(s);
-//                JSONArray historyArray = new JSONArray(object.getJSONArray("bookings"));
-//
-//                for(int i = 0; i < historyArray.length(); i++) {
-//                    JSONObject history = historyArray.getJSONObject(i);
-//
-//                    try {
-//                        int control_number = history.getInt("control_no");
-//                        String date = history.getString("schedule");
-//                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                        Date birthDate = sdf.parse(date);
-//
-//                        historyList.add(new History(control_number, birthDate));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//
-//            if (s!= null)
-//            {
-//
-//                Toast.makeText(mContext, sResult, Toast.LENGTH_LONG).show();
-//            }
-//            else
-//            {
-//
-//                Toast.makeText(mContext, "null", Toast.LENGTH_LONG).show();
-//            }
-
-//            Toast.makeText(mContext, historyList.size(), Toast.LENGTH_LONG).show();
-//            historyAdapter = new HistoryAdapter(getBaseContext(), historyList);
-//            rvHistory.setAdapter(historyAdapter);
-//            rvHistory.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         }
     }
 }

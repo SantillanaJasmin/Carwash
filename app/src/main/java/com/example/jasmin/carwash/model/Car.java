@@ -1,4 +1,4 @@
-package com.example.jasmin.carwash;
+package com.example.jasmin.carwash.model;
 
 /**
  * Created by Jasmin on 2/8/2017.

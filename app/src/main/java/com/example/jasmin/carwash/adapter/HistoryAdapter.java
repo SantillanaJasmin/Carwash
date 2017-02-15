@@ -1,15 +1,14 @@
-package com.example.jasmin.carwash;
+package com.example.jasmin.carwash.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.jasmin.carwash.R;
+import com.example.jasmin.carwash.model.History;
 
 import java.util.ArrayList;
 
@@ -29,16 +28,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvControlNumberLabel, tvControlNumberField, tvDateLabel, tvDateField;
+        TextView tvControlNumberField, tvDateField, tvPriceField;
         View container;
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
 
-            tvControlNumberLabel = (TextView) itemView.findViewById(R.id.tvControlNumLabel);
             tvControlNumberField = (TextView) itemView.findViewById(R.id.tvControlNumField);
-            tvDateLabel = (TextView) itemView.findViewById(R.id.tvDateLabel);
             tvDateField = (TextView) itemView.findViewById(R.id.tvDateField);
+            tvPriceField = (TextView) itemView.findViewById(R.id.tvPriceField);
 
             container = itemView.findViewById(R.id.container);
         }
@@ -68,6 +66,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
         holder.tvControlNumberField.setText(String.valueOf(history.getTrans_number()));
         holder.tvDateField.setText(String.valueOf(history.getDate()));
+        holder.tvPriceField.setText(String.valueOf(history.getPrice()) + " SAR");
     }
 
     @Override

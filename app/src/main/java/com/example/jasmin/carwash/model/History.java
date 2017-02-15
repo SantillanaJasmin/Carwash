@@ -1,4 +1,4 @@
-package com.example.jasmin.carwash;
+package com.example.jasmin.carwash.model;
 
 import java.util.Date;
 
@@ -25,6 +25,12 @@ public class History {
     public History(int number, Date date) {
         this.number = number;
         this.date = date;
+    }
+
+    public History(int number, Date date, double price) {
+        this.number = number;
+        this.date = date;
+        this.price = price;
     }
 
     public History(int trans_number, double trans_price, String trans_details) {

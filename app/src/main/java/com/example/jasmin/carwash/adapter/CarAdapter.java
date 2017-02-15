@@ -1,10 +1,13 @@
-package com.example.jasmin.carwash;
+package com.example.jasmin.carwash.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.jasmin.carwash.R;
+import com.example.jasmin.carwash.model.Car;
 
 import java.util.ArrayList;
 
