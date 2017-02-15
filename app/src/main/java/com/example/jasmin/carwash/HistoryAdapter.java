@@ -66,8 +66,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(final HistoryViewHolder holder, int position) {
         History history = historyList.get(position);
 
-        holder.tvControlNumberField.setText(history.getTrans_number());
-        holder.tvDateField.setText((CharSequence) history.getDate());
+        holder.tvControlNumberField.setText(String.valueOf(history.getTrans_number()));
+        holder.tvDateField.setText(String.valueOf(history.getDate()));
     }
 
     @Override

@@ -64,6 +64,7 @@ public class ViewHistoryActivity extends AppCompatActivity {
         GetHistoryAsyncTask getHistoryAsyncTask = new GetHistoryAsyncTask(this);
         try {
             String s = getHistoryAsyncTask.execute().get();
+//            Toast.makeText(this, "Array Object: " + s, Toast.LENGTH_SHORT).show();
             populateHistoryRecyclerView(s);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -71,7 +72,6 @@ public class ViewHistoryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //            Toast.makeText(this, "History Array Size: " + historyList.size(), Toast.LENGTH_LONG).show();
         historyAdapter = new HistoryAdapter(getBaseContext(), historyList);
         rvHistory.setAdapter(historyAdapter);
         rvHistory.setLayoutManager(new LinearLayoutManager(getBaseContext()));
