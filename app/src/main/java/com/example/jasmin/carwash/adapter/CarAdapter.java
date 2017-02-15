@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jasmin.carwash.R;
@@ -43,15 +44,15 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     public class CarViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvCarModelLabel, tvCarModelField, tvPlateNumLabel, tvPlateNumField;
+        ImageView ivCar;
+        TextView tvCarModelField, tvPlateNumField;
         View container;
 
          public CarViewHolder(View itemView) {
             super(itemView);
 
-             tvCarModelLabel = (TextView) itemView.findViewById(R.id.tvCarModelLabel);
+             ivCar = (ImageView) itemView.findViewById(R.id.ivCar);
              tvCarModelField = (TextView) itemView.findViewById(R.id.tvCarModelField);
-             tvPlateNumLabel = (TextView) itemView.findViewById(R.id.tvPlateNumLabel);
              tvPlateNumField = (TextView) itemView.findViewById(R.id.tvPlateNumField);
 
              container = itemView.findViewById(R.id.carContainer);

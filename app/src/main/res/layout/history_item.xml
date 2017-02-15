@@ -18,21 +18,13 @@
             android:layout_height="match_parent"
             android:padding="10dp">
 
-            <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/ivCar"-->
-                <!--android:adjustViewBounds="true"-->
-                <!--android:src="@drawable/car_side_view"-->
-                <!--android:layout_alignParentTop="true" />-->
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true">
-                <!--android:layout_toEndOf="@id/ivCar"-->
 
+                <!-- Text View for the Control Number-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -40,12 +32,16 @@
                     android:textSize="25dp"
                     android:textStyle="bold"
                     android:id="@+id/tvControlNumField" />
+
+                <!-- Text View for the Date-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="abc123"
                     android:drawableLeft="@drawable/calendar_clock"
                     android:id="@+id/tvDateField" />
+
+                <!-- Text View for the Price-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

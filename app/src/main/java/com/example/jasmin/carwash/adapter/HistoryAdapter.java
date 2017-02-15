@@ -13,19 +13,19 @@ import com.example.jasmin.carwash.model.History;
 import java.util.ArrayList;
 
 /**
- * Created by Jasmin on 2/1/2017.
+ * This will be used to handle each item in the Recycler View
  */
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     private ArrayList<History> historyList;
     private Context appContext;
-    private OnItemClickListener mOnDetailClickListener, mOnDeleteClickListener;
 
     public HistoryAdapter(Context context, ArrayList<History> list) {
         this.appContext = context;
         this.historyList = list;
     }
 
+    /*A class for setting handlers of the 'history_item' view*/
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvControlNumberField, tvDateField, tvPriceField;
@@ -42,33 +42,29 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         }
     }
 
-//    public void setmOnDetailClickListener(OnItemClickListener m) {
-//        this.mOnDetailClickListener = m;
-//    }
-//
-//    public void setmOnDeleteClickListener(OnItemClickListener m) {
-//        this.mOnDeleteClickListener = m;
-//    }
-
     @Override
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //Inflate the layout 'history_item' which will be view of each item in the Recycler View
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_item, parent, false);
-        return new HistoryViewHolder(v);
-    }
 
-    public interface OnItemClickListener {
-        public void onItemClick(int id);
+        return new HistoryViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final HistoryViewHolder holder, int position) {
+        //Get History item for the History List
         History history = historyList.get(position);
 
+        //Set the Control Number of the 'history_item' view
         holder.tvControlNumberField.setText(String.valueOf(history.getTrans_number()));
+        //Set the Date of the 'history_item' view
         holder.tvDateField.setText(String.valueOf(history.getDate()));
+        //Set the Price of the 'history_item' view
         holder.tvPriceField.setText(String.valueOf(history.getPrice()) + " SAR");
     }
 
+
+    /*Return the size of History list*/
     @Override
     public int getItemCount() {
         return historyList.size();

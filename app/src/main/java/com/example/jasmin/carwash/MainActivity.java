@@ -85,9 +85,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_history) {
+            //Call View History Activity when 'History' is selected in the Navigation Drawer
             Intent historyIntent = new Intent(this, ViewHistoryActivity.class);
             startActivity(historyIntent);
         } else if(id == R.id.nav_cars) {
+            //Call View Cars Activity when 'My Cars' is selected in the Navigation Drawer
             Intent carsIntent = new Intent(this, ViewCarsActivity.class);
             startActivity(carsIntent);
         } else if (id == R.id.nav_contact) {
