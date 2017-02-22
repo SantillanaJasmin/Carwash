@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,6 +18,12 @@ import android.widget.Toast;
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.dbHelper.CarsDBHelper;
 import com.example.jasmin.carwash.model.Car;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.io.IOException;
 
@@ -26,20 +34,24 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AddCarActivity extends Activity {
+public class AddCarActivity extends AppCompatActivity {
 
     Button btnAdd, btnCancel;
     EditText etModel, etType, etPlate;
 
-    String sResult;
+    private static final int PLACE_PICKER_REQUEST = 1000;
+    private GoogleApiClient mClient;
 
-    CarsDBHelper carsDBHelper;
+    String location;
+    double lati, longi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add_car);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         etModel = (EditText) findViewById(R.id.etCarModel);
         etType = (EditText) findViewById(R.id.etCarType);
@@ -48,7 +60,11 @@ public class AddCarActivity extends Activity {
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnCancel = (Button) findViewById(R.id.btnCancel);
 
-        carsDBHelper = new CarsDBHelper(getBaseContext());
+        mClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +85,53 @@ public class AddCarActivity extends Activity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(AddCarActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        mClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                StringBuilder stBuilder = new StringBuilder();
+                lati = place.getLatLng().latitude;
+                longi = place.getLatLng().longitude;
+                location = String.format("%s", place.getAddress());
+
+                stBuilder.append("Latitude: ");
+                stBuilder.append(String.valueOf(lati));
+                stBuilder.append("\n");
+                stBuilder.append("Logitude: ");
+                stBuilder.append(String.valueOf(lati));
+                stBuilder.append("\n");
+                stBuilder.append("Address: ");
+                stBuilder.append(location);
+                Log.d("Place", stBuilder.toString());
+            }
+        }
     }
 
     public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {

@@ -10,21 +10,26 @@ public class Car {
     public static final String COLUMN_MODEL = "model";
     public static final String COLUMN_PLATE = "plate";
 
-    private String model, type, plate, remarks;
+    private String model, type, plate, location;
+    private double lati, longi;
 
     public Car() {
 
-    }
-
-    public Car(String model, String plate) {
-        this.model = model;
-        this.plate = plate;
     }
 
     public Car(String model, String type, String plate) {
         this.model = model;
         this.type = type;
         this.plate = plate;
+    }
+
+    public Car(String model, String type, String plate, String location, double lati, double longi) {
+        this.model = model;
+        this.type = type;
+        this.plate = plate;
+        this.location = location;
+        this.lati = lati;
+        this.longi = longi;
     }
 
     public String getModel() {
@@ -51,11 +56,27 @@ public class Car {
         this.plate = plate;
     }
 
-    public String getRemarks() {
-        return remarks;
+    public String getLocation() {
+        return location;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public double getLati() {
+        return lati;
+    }
+
+    public void setLati(double lati) {
+        this.lati = lati;
+    }
+
+    public double getLongi() {
+        return longi;
+    }
+
+    public void setLongi(double longi) {
+        this.longi = longi;
     }
 }

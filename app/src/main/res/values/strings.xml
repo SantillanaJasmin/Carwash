@@ -7,4 +7,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_view_history">Carwash History</string>
     <string name="title_activity_view_cars">My Cars</string>
+    <string name="title_activity_add_car">Add a Car</string>
 </resources>
