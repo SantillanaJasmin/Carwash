@@ -34,6 +34,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         Car car = carList.get(position);
 
         holder.tvCarModelField.setText(car.getModel());
+        holder.tvCarTypeField.setText(car.getType());
         holder.tvPlateNumField.setText(car.getPlate());
     }
 
@@ -45,7 +46,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public class CarViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCar;
-        TextView tvCarModelField, tvPlateNumField;
+        TextView tvCarModelField, tvCarTypeField, tvPlateNumField;
         View container;
 
          public CarViewHolder(View itemView) {
@@ -53,6 +54,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
              ivCar = (ImageView) itemView.findViewById(R.id.ivCar);
              tvCarModelField = (TextView) itemView.findViewById(R.id.tvCarModelField);
+             tvCarTypeField = (TextView) itemView.findViewById(R.id.tvCarTypeField);
              tvPlateNumField = (TextView) itemView.findViewById(R.id.tvPlateNumField);
 
              container = itemView.findViewById(R.id.carContainer);

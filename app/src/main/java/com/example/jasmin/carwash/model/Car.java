@@ -21,6 +21,12 @@ public class Car {
         this.plate = plate;
     }
 
+    public Car(String model, String type, String plate) {
+        this.model = model;
+        this.type = type;
+        this.plate = plate;
+    }
+
     public String getModel() {
         return model;
     }

@@ -43,9 +43,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="abc123"
+                    android:text="A"
                     android:drawableLeft="@drawable/info_outline"
-                    android:id="@+id/tvPlateNumField" />
+                    android:id="@+id/tvCarTypeField"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="abc123"
+                    android:drawableLeft="@drawable/tag"
+                    android:id="@+id/tvPlateNumField"
+                    android:textSize="15dp" />
             </LinearLayout>
         </RelativeLayout>
 
