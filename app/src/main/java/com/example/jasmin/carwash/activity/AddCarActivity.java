@@ -1,23 +1,17 @@
 package com.example.jasmin.carwash.activity;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.jasmin.carwash.R;
-import com.example.jasmin.carwash.dbHelper.CarsDBHelper;
-import com.example.jasmin.carwash.model.Car;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,16 +22,15 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import java.io.IOException;
 
 import okhttp3.FormBody;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class AddCarActivity extends AppCompatActivity {
 
     Button btnAdd, btnCancel;
     EditText etModel, etType, etPlate;
+    TextView tvAddLocation;
 
     private static final int PLACE_PICKER_REQUEST = 1000;
     private GoogleApiClient mClient;
@@ -60,6 +53,8 @@ public class AddCarActivity extends AppCompatActivity {
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnCancel = (Button) findViewById(R.id.btnCancel);
 
+        tvAddLocation = (TextView) findViewById(R.id.tvLocation);
+
         mClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -73,7 +68,7 @@ public class AddCarActivity extends AppCompatActivity {
                 String type = etType.getText().toString();
                 String plate = etPlate.getText().toString();
 
-                new AddCarAsyncTask(getBaseContext()).execute(model, type, plate);
+                new AddCarAsyncTask(getBaseContext()).execute(model, type, plate,  location, String.valueOf(lati), String.valueOf(longi));
 
                 Intent result = new Intent();
                 setResult(RESULT_OK, result);
@@ -85,15 +80,22 @@ public class AddCarActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                finish();
+            }
+        });
+
+        tvAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 try {
-                    startActivityForResult(builder.build(AddCarActivity.this), PLACE_PICKER_REQUEST);
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                    Intent intent = builder.build(AddCarActivity.this);
+                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
                 }
-                finish();
             }
         });
     }
@@ -112,25 +114,19 @@ public class AddCarActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            Place place = PlacePicker.getPlace(data, getBaseContext());
 
-                StringBuilder stBuilder = new StringBuilder();
-                lati = place.getLatLng().latitude;
-                longi = place.getLatLng().longitude;
-                location = String.format("%s", place.getAddress());
+            lati = place.getLatLng().latitude;
+            longi = place.getLatLng().longitude;
+            location = String.format("%s", place.getAddress());
 
-                stBuilder.append("Latitude: ");
-                stBuilder.append(String.valueOf(lati));
-                stBuilder.append("\n");
-                stBuilder.append("Logitude: ");
-                stBuilder.append(String.valueOf(lati));
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(location);
-                Log.d("Place", stBuilder.toString());
-            }
+            tvAddLocation.setText(location);
+//            Toast.makeText(AddCarActivity.this, "Location: " + location + "\tLat: " + String.valueOf(lati) + "\tLong: " + String.valueOf(longi), Toast.LENGTH_SHORT).show();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+
+//            Toast.makeText(AddCarActivity.this, "Huhuhu besh!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -158,6 +154,9 @@ public class AddCarActivity extends AppCompatActivity {
                     .add("model", params[0])
                     .add("type", params[1])
                     .add("plate", params[2])
+                    .add("location", params[3])
+                    .add("lati", params[4])
+                    .add("longi", params[5])
                     .build();
 
             Request request = new Request.Builder()

@@ -8,4 +8,6 @@
     <string name="title_activity_view_history">Carwash History</string>
     <string name="title_activity_view_cars">My Cars</string>
     <string name="title_activity_add_car">Add a Car</string>
+
+    <string name="add_location"><u>Add location</u></string>
 </resources>

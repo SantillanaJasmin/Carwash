@@ -102,8 +102,12 @@ public class ViewCarsActivity extends AppCompatActivity {
                 String model = car.getString("model");
                 String type = car.getString("type");
                 String plate = car.getString("plate");
+                String location = car.getString("location");
+                double lati = car.getDouble("lati");
+                double longi = car.getDouble("longi");
 
-                carList.add(new Car(model, type, plate));
+//                Toast.makeText(this, location + "\t" + lati + "\t" + longi, Toast.LENGTH_SHORT).show();
+                carList.add(new Car(model, type, plate, location, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();
