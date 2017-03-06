@@ -3,6 +3,7 @@ package com.example.jasmin.carwash.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.example.jasmin.carwash.R;
  * A simple {@link Fragment} subclass.
  */
 public class ContactUsFragment extends Fragment {
-
 
     public ContactUsFragment() {
         // Required empty public constructor
@@ -27,5 +27,10 @@ public class ContactUsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_contact_us, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Contact Us");
+    }
 }

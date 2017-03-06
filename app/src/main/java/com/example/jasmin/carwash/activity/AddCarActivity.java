@@ -122,11 +122,18 @@ public class AddCarActivity extends AppCompatActivity {
             location = String.format("%s", place.getAddress());
 
             tvAddLocation.setText(location);
-//            Toast.makeText(AddCarActivity.this, "Location: " + location + "\tLat: " + String.valueOf(lati) + "\tLong: " + String.valueOf(longi), Toast.LENGTH_SHORT).show();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
-//            Toast.makeText(AddCarActivity.this, "Huhuhu besh!", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        }
+        else {
+            getFragmentManager().popBackStack();
         }
     }
 

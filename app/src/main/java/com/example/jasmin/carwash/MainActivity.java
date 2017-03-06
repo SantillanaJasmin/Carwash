@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,10 +38,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment = new MainFragment(); // create a fragment object
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFrame, fragment);
-        ft.commit();
+        if (savedInstanceState == null) {
+            Fragment fragment = new MainFragment(); // create a fragment object
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.mainFrame, fragment);
+            ft.commit();
+        }
     }
 
     @Override
@@ -48,6 +51,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment =null;//declaring fragment object
+        Fragment fragment = null;//declaring fragment object
 
         if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
@@ -93,12 +102,14 @@ public class MainActivity extends AppCompatActivity
             fragment = new AboutUsFragment();
         }
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFrame, fragment);
-        ft.commit();
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.mainFrame, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+
         return true;
     }
 }
