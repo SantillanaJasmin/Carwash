@@ -1,22 +1,25 @@
-package com.example.jasmin.carwash.activity;
+package com.example.jasmin.carwash.fragment;
 
+
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import com.example.jasmin.carwash.dbHelper.CarsDBHelper;
-import com.example.jasmin.carwash.model.Car;
-import com.example.jasmin.carwash.adapter.CarAdapter;
 import com.example.jasmin.carwash.R;
+import com.example.jasmin.carwash.activity.AddCarActivity;
+import com.example.jasmin.carwash.adapter.CarAdapter;
+import com.example.jasmin.carwash.model.Car;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,11 +34,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * An Activity that displays all cars of a user
+ * A simple {@link Fragment} subclass.
  */
-public class ViewCarsActivity extends AppCompatActivity {
+public class MyCarsFragment extends Fragment {
 
-    static final int REQUEST_CAR = 0;
+    public static final int REQUEST_CAR = 0;
 
     ArrayList<Car> carList;
     CarAdapter carAdapter;
@@ -43,28 +46,23 @@ public class ViewCarsActivity extends AppCompatActivity {
 
     String sResult;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_cars);
+    public MyCarsFragment() {
+        // Required empty public constructor
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_my_cars, container, false);
 
         carList = new ArrayList<>();
 
         //Handler for the Recycler View
-        rvCars = (RecyclerView) findViewById(R.id.rvCars);
+        rvCars = (RecyclerView) v.findViewById(R.id.rvCars);
 
-        GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(this);
+        GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(getActivity());
         try {
             String s = getCarsAsyncTask.execute().get();
             populateCarsRecyclerView(s);
@@ -78,18 +76,27 @@ public class ViewCarsActivity extends AppCompatActivity {
 
         //Set Adapter of Recycler View
         rvCars.setAdapter(carAdapter);
-        rvCars.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        rvCars.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //Set click listener for the FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.addCar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(getBaseContext(), AddCarActivity.class);
+                Intent intent=new Intent(getActivity(), AddCarActivity.class);
                 startActivityForResult(intent, REQUEST_CAR);
             }
         });
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Cars");
     }
 
     public void populateCarsRecyclerView(String s) {
@@ -115,28 +122,12 @@ public class ViewCarsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-//        GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(this);
-//        try {
-//            String s = getCarsAsyncTask.execute().get();
-//            populateCarsRecyclerView(s);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-//        carAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAR) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 carList.clear();
-                GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(this);
+                GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(getActivity());
                 try {
                     String s = getCarsAsyncTask.execute().get();
                     populateCarsRecyclerView(s);
@@ -172,7 +163,7 @@ public class ViewCarsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String url = "http://192.168.2.212:8080/CarwashServer/GetCarsServlet";
+            String url = "http://192.168.2.213:8080/CarwashServer/GetCarsServlet";
 
             //Instantiate client
             OkHttpClient client = new OkHttpClient();

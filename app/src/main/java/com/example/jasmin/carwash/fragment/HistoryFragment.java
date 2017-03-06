@@ -1,18 +1,22 @@
-package com.example.jasmin.carwash.activity;
+package com.example.jasmin.carwash.fragment;
+
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.example.jasmin.carwash.model.History;
-import com.example.jasmin.carwash.adapter.HistoryAdapter;
 import com.example.jasmin.carwash.R;
+import com.example.jasmin.carwash.adapter.HistoryAdapter;
+import com.example.jasmin.carwash.model.History;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,42 +35,36 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-
 /**
- * An Activity that displays the booking history of a user
+ * A simple {@link Fragment} subclass.
  */
-public class ViewHistoryActivity extends AppCompatActivity {
+public class HistoryFragment extends Fragment {
 
     ArrayList<History> historyList;
     HistoryAdapter historyAdapter;
     RecyclerView rvHistory;
 
-    String sResult ;
+    String sResult;
+
+    public HistoryFragment() {
+        // Required empty public constructor
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_history);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_history, container, false);
 
         //Instantiate the History list where the history items will be stored
         historyList = new ArrayList<>();
 
         //Handler for the Recycler View
-        rvHistory = (RecyclerView) findViewById(R.id.rvHistory);
+        rvHistory = (RecyclerView) v.findViewById(R.id.rvHistory);
 
         //Get booking history from the database and store the result to String 's'
-        GetHistoryAsyncTask getHistoryAsyncTask = new GetHistoryAsyncTask(this);
+        GetHistoryAsyncTask getHistoryAsyncTask = new GetHistoryAsyncTask(getActivity());
         try {
             String s = getHistoryAsyncTask.execute().get();
             populateHistoryRecyclerView(s);
@@ -77,13 +75,21 @@ public class ViewHistoryActivity extends AppCompatActivity {
         }
 
         //Instantiate History Adapter and pass the History List
-        historyAdapter = new HistoryAdapter(getBaseContext(), historyList);
+        historyAdapter = new HistoryAdapter(getActivity(), historyList);
 
         //Set Adapter of Recycler View
         rvHistory.setAdapter(historyAdapter);
-        rvHistory.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        rvHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("History");
+    }
 
     /*Function for parsing JSON Object returned by the Async Task*/
     public void populateHistoryRecyclerView(String s) {
@@ -132,11 +138,6 @@ public class ViewHistoryActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     public class GetHistoryAsyncTask extends AsyncTask<Void, Void, String> {

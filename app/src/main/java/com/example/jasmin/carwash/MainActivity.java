@@ -1,10 +1,8 @@
 package com.example.jasmin.carwash;
 
-import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.jasmin.carwash.activity.ViewCarsActivity;
-import com.example.jasmin.carwash.activity.ViewHistoryActivity;
+import com.example.jasmin.carwash.fragment.AboutUsFragment;
+import com.example.jasmin.carwash.fragment.ContactUsFragment;
+import com.example.jasmin.carwash.fragment.HistoryFragment;
+import com.example.jasmin.carwash.fragment.MainFragment;
+import com.example.jasmin.carwash.fragment.MyCarsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,15 +28,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -44,6 +36,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Fragment fragment = new MainFragment(); // create a fragment object
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.mainFrame, fragment);
+        ft.commit();
     }
 
     @Override
@@ -84,19 +81,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Fragment fragment =null;//declaring fragment object
+
         if (id == R.id.nav_history) {
-            //Call View History Activity when 'History' is selected in the Navigation Drawer
-            Intent historyIntent = new Intent(this, ViewHistoryActivity.class);
-            startActivity(historyIntent);
+            fragment = new HistoryFragment();
         } else if(id == R.id.nav_cars) {
-            //Call View Cars Activity when 'My Cars' is selected in the Navigation Drawer
-            Intent carsIntent = new Intent(this, ViewCarsActivity.class);
-            startActivity(carsIntent);
+            fragment = new MyCarsFragment();
         } else if (id == R.id.nav_contact) {
-
+            fragment = new ContactUsFragment();
         } else if (id == R.id.nav_about) {
-
+            fragment = new AboutUsFragment();
         }
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.mainFrame, fragment);
+        ft.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

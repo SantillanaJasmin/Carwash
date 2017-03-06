@@ -145,7 +145,7 @@ public class AddCarActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... params) {
-            String url = "http://192.168.2.212:8080/CarwashServer/AddCarServlet";
+            String url = "http://192.168.2.213:8080/CarwashServer/AddCarServlet";
 
             //Instantiate client
             OkHttpClient client = new OkHttpClient();

@@ -1,27 +1,24 @@
 <?php
-    $con=mysqli_connect("localhost:3306","root","password","carwash");
+    $con=mysqli_connect("cwandroid.000webhostapp.com","id805337_localhost","password","id805337_carwash");
     if (mysqli_connect_errno($con))
     {
        echo '{"query_result":"ERROR"}';
     }
-
-    // $car_model = $_GET['model'];
-    // $car_type = $_GET['type'];
-    // $car_plate = $_GET['plate'];
-    $car_model = 'Honda';
-    $car_type = 'A';
-    $car_plate = 'ABC 123';
-    $sql = "INSERT INTO cars(car_model, car_type, car_plate) VALUES ('$car_model', '$car_type', '$car_plate')";
-
-    $res = mysqli_query($con,$sql);
-
-    $res = mysqli_query($con,$sql);
-
-    if($res == true) {
-      echo '{"query_result":"SUCCESS"}';
-    }
-    else{
-      echo '{"query_result":"FAILURE"}';
-    }
+ 
+    // $fullName = $_GET['fullname'];
+    // $userName = $_GET['username'];
+    // $passWord = $_GET['password'];
+    // $phoneNumber = $_GET['phonenumber'];
+    // $emailAddress = $_GET['emailaddress'];
+     
+    // $result = mysqli_query($con,"INSERT INTO user (fullname, username, password, phone, email) 
+    //           VALUES ('$fullName', '$userName', '$passWord', '$phoneNumber', '$emailAddress')");
+     
+    // if($result == true) {
+    //     echo '{"query_result":"SUCCESS"}';
+    // }
+    // else{
+    //     echo '{"query_result":"FAILURE"}';
+    // }
     mysqli_close($con);
 ?>

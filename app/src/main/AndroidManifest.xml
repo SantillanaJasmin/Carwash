@@ -29,16 +29,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ViewHistoryActivity"
-            android:label="@string/title_activity_view_history"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".activity.ViewCarsActivity"
-            android:label="@string/title_activity_view_cars"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
             android:name=".activity.AddCarActivity"
             android:label="@string/title_activity_add_car"
             android:theme="@style/AppTheme.NoActionBar" >
