@@ -1,5 +1,6 @@
 package com.example.jasmin.carwash.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,11 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jasmin.carwash.R;
+import com.example.jasmin.carwash.asynctask.AddCarAsyncTask;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,7 +35,8 @@ public class AddCarActivity extends AppCompatActivity {
 
     Button btnAdd, btnCancel;
     EditText etModel, etType, etPlate;
-    TextView tvAddLocation;
+    ImageButton ibAddLocation;
+    TextView tvLocation;
 
     private static final int PLACE_PICKER_REQUEST = 1000;
     private GoogleApiClient mClient;
@@ -42,7 +48,7 @@ public class AddCarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_car);
-
+//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -53,7 +59,8 @@ public class AddCarActivity extends AppCompatActivity {
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnCancel = (Button) findViewById(R.id.btnCancel);
 
-        tvAddLocation = (TextView) findViewById(R.id.tvLocation);
+        ibAddLocation = (ImageButton) findViewById(R.id.selectLocation);
+        tvLocation = (TextView) findViewById(R.id.tvLocation);
 
         mClient = new GoogleApiClient
                 .Builder(this)
@@ -84,7 +91,7 @@ public class AddCarActivity extends AppCompatActivity {
             }
         });
 
-        tvAddLocation.setOnClickListener(new View.OnClickListener() {
+        ibAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -121,7 +128,7 @@ public class AddCarActivity extends AppCompatActivity {
             longi = place.getLatLng().longitude;
             location = String.format("%s", place.getAddress());
 
-            tvAddLocation.setText(location);
+            tvLocation.setText(location);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -134,58 +141,6 @@ public class AddCarActivity extends AppCompatActivity {
         }
         else {
             getFragmentManager().popBackStack();
-        }
-    }
-
-    public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
-
-        Context mContext;
-
-        public AddCarAsyncTask(Context context) {
-            this.mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            String url = "http://192.168.2.213:8080/CarwashServer/AddCarServlet";
-
-            //Instantiate client
-            OkHttpClient client = new OkHttpClient();
-
-            RequestBody requestBody = new FormBody.Builder()
-                    .add("model", params[0])
-                    .add("type", params[1])
-                    .add("plate", params[2])
-                    .add("location", params[3])
-                    .add("lati", params[4])
-                    .add("longi", params[5])
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(requestBody)
-                    .build();
-
-            try {
-                //the request will be executed
-                client.newCall(request).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            finish();
         }
     }
 }
