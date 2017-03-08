@@ -45,8 +45,6 @@ public class MyCarsFragment extends Fragment {
     CarAdapter carAdapter;
     RecyclerView rvCars;
 
-    String sResult;
-
     public MyCarsFragment() {
         // Required empty public constructor
     }
@@ -102,6 +100,11 @@ public class MyCarsFragment extends Fragment {
 
     public void populateCarsRecyclerView(String s) {
         try {
+//            JSONObject jsonObject = new JSONObject(s);
+
+            // Getting JSON Array 'bookings' node
+//            JSONArray carArray = jsonObject.getJSONArray("cars");
+
             JSONArray carArray = new JSONArray(s);
 
             for(int i = 0; i < carArray.length(); i++) {
@@ -114,8 +117,8 @@ public class MyCarsFragment extends Fragment {
                 double lati = car.getDouble("lati");
                 double longi = car.getDouble("longi");
 
-//                Toast.makeText(this, location + "\t" + lati + "\t" + longi, Toast.LENGTH_SHORT).show();
                 carList.add(new Car(model, type, plate, location, lati, longi));
+//                carList.add(new Car(model, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -128,6 +131,7 @@ public class MyCarsFragment extends Fragment {
         if (requestCode == REQUEST_CAR) {
             if (resultCode == Activity.RESULT_OK) {
                 carList.clear();
+
                 GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(getActivity());
                 try {
                     String s = getCarsAsyncTask.execute().get();
@@ -136,6 +140,7 @@ public class MyCarsFragment extends Fragment {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
+
                     carAdapter.notifyDataSetChanged();
                 }
             }

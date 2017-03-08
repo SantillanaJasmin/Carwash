@@ -17,6 +17,12 @@ public class Car {
 
     }
 
+    public Car(String model, double lati, double longi) {
+        this.model = model;
+        this.lati = lati;
+        this.longi = longi;
+    }
+
     public Car(String model, String type, String plate) {
         this.model = model;
         this.type = type;

@@ -12,6 +12,8 @@ import okhttp3.Response;
 
 /**
  * Created by Jasmin on 3/6/2017.
+ *
+ * A class for fetching the car items from the database
  */
 public class GetCarsAsyncTask extends AsyncTask<Void, Void, String> {
 
@@ -35,13 +37,15 @@ public class GetCarsAsyncTask extends AsyncTask<Void, Void, String> {
         pdLoading.show();
     }
 
+    //Fetching the car items from the database. OkHttpClient is used for faster retrieving of data
     @Override
     protected String doInBackground(Void... params) {
-        String url = "http://192.168.2.213:8080/CarwashServer/GetCarsServlet";
+        String url = "http://192.168.2.212:8080/CarwashServer/GetCarsServlet";
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
 
+        //Request to server
         Request request = new Request.Builder()
                 .url(url)
                 .build();

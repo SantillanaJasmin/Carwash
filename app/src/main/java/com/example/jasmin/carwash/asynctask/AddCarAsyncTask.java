@@ -12,6 +12,8 @@ import okhttp3.RequestBody;
 
 /**
  * Created by Jasmin on 3/6/2017.
+ *
+ * A class for adding a car item to the database
  */
 public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
 
@@ -26,13 +28,15 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
         super.onPreExecute();
     }
 
+    //Adding a car item the database is done in the background. OkHttpClient is used for faster retrieving of data
     @Override
     protected Void doInBackground(String... params) {
-        String url = "http://192.168.2.213:8080/CarwashServer/AddCarServlet";
+        String url = "http://192.168.2.212:8080/CarwashServer/AddCarServlet";
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
 
+        //Add parameters to the request
         RequestBody requestBody = new FormBody.Builder()
                 .add("model", params[0])
                 .add("type", params[1])
@@ -42,6 +46,7 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
                 .add("longi", params[5])
                 .build();
 
+        //Request to server with the corresponding parameters
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)

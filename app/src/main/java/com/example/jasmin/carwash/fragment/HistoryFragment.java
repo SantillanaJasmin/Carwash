@@ -45,8 +45,6 @@ public class HistoryFragment extends Fragment {
     HistoryAdapter historyAdapter;
     RecyclerView rvHistory;
 
-    String sResult;
-
     public HistoryFragment() {
         // Required empty public constructor
     }
@@ -58,7 +56,7 @@ public class HistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
-        //Instantiate the History list where the history items will be stored
+        //Instantiate the list where the history items will be stored
         historyList = new ArrayList<>();
 
         //Handler for the Recycler View

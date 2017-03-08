@@ -65,17 +65,19 @@
             android:paddingTop="5dp">
 
             <TextView
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/location"
                 android:id="@+id/tvLocation"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.8"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/map_marker"
-                android:id="@+id/selectLocation"/>
+                android:id="@+id/selectLocation"
+                android:layout_weight="0.02"/>
         </LinearLayout>
 </RelativeLayout>

@@ -12,6 +12,8 @@ import okhttp3.Response;
 
 /**
  * Created by Jasmin on 3/6/2017.
+ *
+ * A class for fetching the history from the database
  */
 public class GetHistoryAsyncTask extends AsyncTask<Void, Void, String> {
 
@@ -43,6 +45,7 @@ public class GetHistoryAsyncTask extends AsyncTask<Void, Void, String> {
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
 
+        //Request to server
         Request request = new Request.Builder()
                 .url(url)
                 .build();
