@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.asynctask.AddCarAsyncTask;
@@ -27,6 +28,12 @@ public class AddCarActivity extends AppCompatActivity {
     TextView tvLocation;
 
     private static final int PLACE_PICKER_REQUEST = 1000;
+
+    public static int SET_LOCATION_REQUEST = 1;
+    public static String EXTRA_LAT = "lati";
+    public static String EXTRA_LONG = "longi";
+    public static String EXTRA_LOC = "loc";
+
     private GoogleApiClient mClient;
 
     String location;
@@ -83,15 +90,17 @@ public class AddCarActivity extends AppCompatActivity {
         ibAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                    Intent intent = builder.build(AddCarActivity.this);
-                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//                    Intent intent = builder.build(AddCarActivity.this);
+//                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
+//                } catch (GooglePlayServicesRepairableException e) {
+//                    e.printStackTrace();
+//                } catch (GooglePlayServicesNotAvailableException e) {
+//                    e.printStackTrace();
+//                }
+                Intent intent = new Intent(AddCarActivity.this, SetLocationActivity.class);
+                startActivityForResult(intent, SET_LOCATION_REQUEST);
             }
         });
     }
@@ -110,16 +119,25 @@ public class AddCarActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            Place place = PlacePicker.getPlace(data, getBaseContext());
-
-            lati = place.getLatLng().latitude;
-            longi = place.getLatLng().longitude;
-            location = String.format("%s", place.getAddress());
+//        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+//            Place place = PlacePicker.getPlace(data, getBaseContext());
+//
+//            lati = place.getLatLng().latitude;
+//            longi = place.getLatLng().longitude;
+//            location = String.format("%s", place.getAddress());
+//
+//            tvLocation.setText(location);
+//        } else {
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+        if(requestCode == SET_LOCATION_REQUEST && resultCode == RESULT_OK) {
+            lati = Double.valueOf(data.getExtras().getString(EXTRA_LAT));
+            longi = Double.valueOf(data.getExtras().getString(EXTRA_LONG));
+            location = data.getExtras().getString(EXTRA_LOC);
 
             tvLocation.setText(location);
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+
+            Toast.makeText(getBaseContext(), "Location: " + location + "\nLatitude: " + lati + "\nLongitude: " + longi, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme" >
 
         <!-- Put your Google Maps V2 API Key here. -->
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD3nVG9_qmCJcEOpETIu_ucmPDZx8YKjUc" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAQyNhBPfbKpbavLtN6owa-1AS17g28goo" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
         <activity
@@ -32,6 +32,10 @@
             android:name=".activity.AddCarActivity"
             android:label="@string/title_activity_add_car"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name="com.example.jasmin.carwash.activity.SetLocationActivity"
+            android:label="@string/title_activity_set_location">
+
         </activity>
     </application>
 
