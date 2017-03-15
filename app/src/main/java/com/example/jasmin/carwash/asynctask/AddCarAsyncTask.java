@@ -31,7 +31,7 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
     //Adding a car item the database is done in the background. OkHttpClient is used for faster retrieving of data
     @Override
     protected Void doInBackground(String... params) {
-        String url = "http://192.168.2.212:8080/CarwashServer/AddCarServlet";
+        String url = "http://192.168.2.214:8080/CarwashServer/AddCarServlet";
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
