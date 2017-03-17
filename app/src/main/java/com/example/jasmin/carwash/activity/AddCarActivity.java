@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.asynctask.AddCarAsyncTask;
@@ -23,6 +24,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.IOException;
 
@@ -41,7 +45,7 @@ public class AddCarActivity extends AppCompatActivity {
     private static final int PLACE_PICKER_REQUEST = 1000;
     private GoogleApiClient mClient;
 
-    String location;
+    String name, plate, location;
     double lati, longi;
 
     @Override
@@ -53,7 +57,6 @@ public class AddCarActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         etModel = (EditText) findViewById(R.id.etCarModel);
-        etType = (EditText) findViewById(R.id.etCarType);
         etPlate = (EditText) findViewById(R.id.etCarPlate);
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -71,16 +74,31 @@ public class AddCarActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vp) {
-                String model = etModel.getText().toString();
-                String type = etType.getText().toString();
-                String plate = etPlate.getText().toString();
+                name = etModel.getText().toString();
+                plate = etPlate.getText().toString();
 
-                new AddCarAsyncTask(getBaseContext()).execute(model, type, plate,  location, String.valueOf(lati), String.valueOf(longi));
+                JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 
-                Intent result = new Intent();
-                setResult(RESULT_OK, result);
+                ObjectNode node = nodeFactory.objectNode();
 
-                finish();
+                ObjectNode child = nodeFactory.objectNode(); // the child
+
+                child.put("name", name);
+                child.put("plate", plate);
+                child.put("location", location);
+                child.put("lat", String.valueOf(lati));
+                child.put("long", String.valueOf(longi));
+
+                node.put("notification", child);
+                node.put("user_id", 1);
+
+                Toast.makeText(this, node.toString(), Toast.LENGTH_LONG).show();
+//                new AddCarAsyncTask(getBaseContext()).execute(name, plate, location, String.valueOf(lati), String.valueOf(longi));
+//
+//                Intent result = new Intent();
+//                setResult(RESULT_OK, result);
+//
+//                finish();
             }
         });
 

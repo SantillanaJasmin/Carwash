@@ -33,10 +33,10 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public void onBindViewHolder(CarViewHolder holder, int position) {
         Car car = carList.get(position);
 
-        holder.tvCarModelField.setText(car.getModel());
-        holder.tvCarTypeField.setText(car.getType());
-        holder.tvPlateNumField.setText(car.getPlate());
-        holder.tvLocationField.setText(car.getLocation());
+        holder.tvNameField.setText(car.getName());
+        holder.tvLatField.setText("Lat: " + String.valueOf(car.getLati()));
+        holder.tvLongField.setText("Long: " + String.valueOf(car.getLongi()));
+
     }
 
     @Override
@@ -47,17 +47,16 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public class CarViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCar;
-        TextView tvCarModelField, tvCarTypeField, tvPlateNumField, tvLocationField;
+        TextView tvNameField, tvLatField, tvLongField;
         View container;
 
          public CarViewHolder(View itemView) {
             super(itemView);
 
              ivCar = (ImageView) itemView.findViewById(R.id.ivCar);
-             tvCarModelField = (TextView) itemView.findViewById(R.id.tvCarModelField);
-             tvCarTypeField = (TextView) itemView.findViewById(R.id.tvCarTypeField);
-             tvPlateNumField = (TextView) itemView.findViewById(R.id.tvPlateNumField);
-             tvLocationField = (TextView) itemView.findViewById(R.id.tvLocationField);
+             tvNameField = (TextView) itemView.findViewById(R.id.tvNameField);
+             tvLatField = (TextView) itemView.findViewById(R.id.tvLatField);
+             tvLongField = (TextView) itemView.findViewById(R.id.tvLongField);
 
              container = itemView.findViewById(R.id.carContainer);
          }

@@ -37,7 +37,7 @@ public class GetCarsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... params) {
-        String url = "http://192.168.2.213:8080/CarwashServer/GetCarsServlet";
+        String url = "http://192.168.2.52:3004/carwash/car/1";
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();

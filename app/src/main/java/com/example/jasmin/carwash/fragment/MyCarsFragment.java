@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.activity.AddCarActivity;
@@ -102,20 +103,22 @@ public class MyCarsFragment extends Fragment {
 
     public void populateCarsRecyclerView(String s) {
         try {
-            JSONArray carArray = new JSONArray(s);
+            JSONObject jsonObject = new JSONObject(s);
+
+            JSONArray carArray = jsonObject.getJSONArray("cars");
 
             for(int i = 0; i < carArray.length(); i++) {
+                String name = "";
+                double lati, longi = 0;
+
                 JSONObject car = carArray.getJSONObject(i);
 
-                String model = car.getString("model");
-                String type = car.getString("type");
-                String plate = car.getString("plate");
-                String location = car.getString("location");
-                double lati = car.getDouble("lati");
-                double longi = car.getDouble("longi");
+                name = car.getString("name");
+                lati = Double.valueOf(car.getString("lat"));
+                longi = Double.valueOf(car.getString("long"));
 
-//                Toast.makeText(this, location + "\t" + lati + "\t" + longi, Toast.LENGTH_SHORT).show();
-                carList.add(new Car(model, type, plate, location, lati, longi));
+//                Toast.makeText(getActivity(), name + "\t" + lati + "\t" + longi, Toast.LENGTH_SHORT).show();
+                carList.add(new Car(name, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();

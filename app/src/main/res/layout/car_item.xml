@@ -39,28 +39,41 @@
                     android:text="abc123"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    android:id="@+id/tvCarModelField" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="A"
-                    android:drawableLeft="@drawable/info_outline"
-                    android:id="@+id/tvCarTypeField"
-                    android:textSize="15dp" />
-
+                    android:id="@+id/tvNameField" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="A"-->
+                    <!--android:drawableLeft="@drawable/info_outline"-->
+                    <!--android:id="@+id/tvCarTypeField"-->
+                    <!--android:textSize="15dp" />-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="abc123"-->
+                    <!--android:drawableLeft="@drawable/tag"-->
+                    <!--android:id="@+id/tvPlateNumField"-->
+                    <!--android:textSize="15dp" />-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="abc123"-->
+                    <!--android:drawableLeft="@drawable/home"-->
+                    <!--android:id="@+id/tvLocationField"-->
+                    <!--android:textSize="15dp" />-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="abc123"
                     android:drawableLeft="@drawable/tag"
-                    android:id="@+id/tvPlateNumField"
+                    android:id="@+id/tvLatField"
                     android:textSize="15dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="abc123"
-                    android:drawableLeft="@drawable/home"
-                    android:id="@+id/tvLocationField"
+                    android:drawableLeft="@drawable/tag"
+                    android:id="@+id/tvLongField"
                     android:textSize="15dp" />
             </LinearLayout>
         </RelativeLayout>

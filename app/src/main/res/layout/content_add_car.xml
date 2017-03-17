@@ -18,17 +18,9 @@
         <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etCarType"
-        android:hint="Enter Car Type"
-        android:layout_below="@+id/etCarModel"
-        android:layout_alignParentStart="true" />
-
-        <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/etCarPlate"
         android:hint="Enter Car Plate"
-        android:layout_below="@+id/etCarType"
+        android:layout_below="@id/etCarModel"
         android:layout_alignParentStart="true" />
 
         <LinearLayout
@@ -70,12 +62,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/location"
                 android:id="@+id/tvLocation"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.8"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/map_marker"
-                android:id="@+id/selectLocation"/>
+                android:id="@+id/selectLocation"
+                android:layout_weight="0.02"/>
         </LinearLayout>
 </RelativeLayout>

@@ -5,12 +5,7 @@ package com.example.jasmin.carwash.model;
  */
 public class Car {
 
-    public static final String TABLE_NAME = "cars";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_MODEL = "model";
-    public static final String COLUMN_PLATE = "plate";
-
-    private String model, type, plate, location;
+    private String name, type, plate, location;
     private double lati, longi;
 
     public Car() {
@@ -18,13 +13,13 @@ public class Car {
     }
 
     public Car(String model, String type, String plate) {
-        this.model = model;
+        this.name = model;
         this.type = type;
         this.plate = plate;
     }
 
     public Car(String model, String type, String plate, String location, double lati, double longi) {
-        this.model = model;
+        this.name = model;
         this.type = type;
         this.plate = plate;
         this.location = location;
@@ -32,12 +27,18 @@ public class Car {
         this.longi = longi;
     }
 
-    public String getModel() {
-        return model;
+    public Car(String name, double lati, double longi) {
+        this.name = name;
+        this.lati = lati;
+        this.longi = longi;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String model) {
+        this.name = model;
     }
 
     public String getType() {
