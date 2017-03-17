@@ -117,7 +117,6 @@ public class MyCarsFragment extends Fragment {
                 lati = Double.valueOf(car.getString("lat"));
                 longi = Double.valueOf(car.getString("long"));
 
-//                Toast.makeText(getActivity(), name + "\t" + lati + "\t" + longi, Toast.LENGTH_SHORT).show();
                 carList.add(new Car(name, lati, longi));
             }
         } catch (JSONException e) {

@@ -27,6 +27,9 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -77,28 +80,12 @@ public class AddCarActivity extends AppCompatActivity {
                 name = etModel.getText().toString();
                 plate = etPlate.getText().toString();
 
-                JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+                new AddCarAsyncTask(getBaseContext()).execute(name, plate, location, String.valueOf(lati), String.valueOf(longi));
 
-                ObjectNode node = nodeFactory.objectNode();
+                Intent result = new Intent();
+                setResult(RESULT_OK, result);
 
-                ObjectNode child = nodeFactory.objectNode(); // the child
-
-                child.put("name", name);
-                child.put("plate", plate);
-                child.put("location", location);
-                child.put("lat", String.valueOf(lati));
-                child.put("long", String.valueOf(longi));
-
-                node.put("notification", child);
-                node.put("user_id", 1);
-
-                Toast.makeText(this, node.toString(), Toast.LENGTH_LONG).show();
-//                new AddCarAsyncTask(getBaseContext()).execute(name, plate, location, String.valueOf(lati), String.valueOf(longi));
-//
-//                Intent result = new Intent();
-//                setResult(RESULT_OK, result);
-//
-//                finish();
+                finish();
             }
         });
 

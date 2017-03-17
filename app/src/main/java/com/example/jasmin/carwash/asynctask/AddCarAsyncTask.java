@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -37,20 +40,28 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... params) {
         String url = "http://192.168.2.52:3004/carwash/car/create";
 
-        JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+        JSONArray array = new JSONArray();          //create json array for the car details
+        JSONObject carDetails = new JSONObject();   //json object for car details
+        JSONObject car = new JSONObject();          //json object containing "cars" and "user_id"
+        try {
+            carDetails.put("name", params[0]);
+            carDetails.put("plate", params[1]);
+            carDetails.put("location", params[2]);
+            carDetails.put("lat", params[3]);
+            carDetails.put("long", params[4]);
 
-        ObjectNode node = nodeFactory.objectNode();
+            array.put(0, carDetails);
 
-        ObjectNode child = nodeFactory.objectNode(); // the child
-
-        child.put("name", params[0]);
-        child.put("plate", params[1]);
-        child.put("location", params[2]);
-        child.put("lat", params[3]);
-        child.put("long", params[4]);
-
-        node.put("notification", child);
-        node.put("user_id", 1);
+            car.put("cars", array);
+            car.put("user_id", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            array.put(0, carDetails);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
@@ -62,7 +73,7 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
 //                .add("lati", params[3])
 //                .add("longi", params[4])
 //                .build();
-        RequestBody requestBody = RequestBody.create(JSON, node.toString());
+        RequestBody requestBody = RequestBody.create(JSON, car.toString());
 
         Request request = new Request.Builder()
                 .url(url)
