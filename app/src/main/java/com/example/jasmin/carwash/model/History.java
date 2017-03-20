@@ -7,16 +7,11 @@ import java.util.Date;
  */
 public class History {
 
-    public static final String TABLE_NAME = "history";
-    public static final String COLUMN_ID = "_id";   //primary key
-    public static final String COLUMN_TRANS_NUMBER = "trans_number";
-    public static final String COLUMN_TRANS_PRICE= "trans_price";
-    public static final String COLUMN_TRANS_DETAILS = "trans_details";
-
     private int id, number;
     private double price;
+    private int ratings;
     private Date date;
-    private String details;
+    private String comment;
 
     public History() {
 
@@ -33,10 +28,13 @@ public class History {
         this.price = price;
     }
 
-    public History(int trans_number, double trans_price, String trans_details) {
+    public History(int id, int trans_number, Date date, double trans_price, int ratings, String trans_comment) {
+        this.id = id;
         this.number = trans_number;
+        this.date = date;
         this.price = trans_price;
-        this.details = trans_details;
+        this.comment = trans_comment;
+        this.ratings = ratings;
     }
 
     public int getTrans_number() {
@@ -55,12 +53,12 @@ public class History {
         this.price = price;
     }
 
-    public String getDetails() {
-        return details;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public int getId() {
@@ -77,5 +75,13 @@ public class History {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(int ratings) {
+        this.ratings = ratings;
     }
 }

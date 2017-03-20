@@ -16,7 +16,6 @@ import com.example.jasmin.carwash.fragment.AboutUsFragment;
 import com.example.jasmin.carwash.fragment.ContactUsFragment;
 import com.example.jasmin.carwash.fragment.HistoryFragment;
 import com.example.jasmin.carwash.fragment.MainFragment;
-import com.example.jasmin.carwash.fragment.MyCarsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,8 +93,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-        } else if(id == R.id.nav_cars) {
-            fragment = new MyCarsFragment();
         } else if (id == R.id.nav_contact) {
             fragment = new ContactUsFragment();
         } else if (id == R.id.nav_about) {

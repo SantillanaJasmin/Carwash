@@ -13,10 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.adapter.HistoryAdapter;
 import com.example.jasmin.carwash.asynctask.GetHistoryAsyncTask;
+import com.example.jasmin.carwash.asynctask.GetRatingAsyncTask;
 import com.example.jasmin.carwash.model.History;
 
 import org.json.JSONArray;
@@ -44,8 +46,6 @@ public class HistoryFragment extends Fragment {
     ArrayList<History> historyList;
     HistoryAdapter historyAdapter;
     RecyclerView rvHistory;
-
-    String sResult;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -103,15 +103,19 @@ public class HistoryFragment extends Fragment {
             //Iterate through the node
             for(int i = 0; i < historyArray.length(); i++) {
                 //Instantiate variables
-                int control_number = 0;
-                double control_price = 0;
+                int id = 0;                 //booking id
+                int control_number = 0;     //control number
+                double control_price = 0;   //total
                 String date = "";
-                Date control_date = null;
+                Date control_date = null;   //schedule
 
                 //Get JSON Object from the JSON Array 'bookings'
                 JSONObject history = historyArray.getJSONObject(i);
 
                 try {
+                    //Get booking id
+                    id = history.getInt("id");
+
                     //Get control number
                     control_number = history.getInt("control_no");
 
@@ -132,8 +136,31 @@ public class HistoryFragment extends Fragment {
                     e.printStackTrace();
                     continue;
                 } finally {
-                    //Create new History item and add it to the History list
-                    historyList.add(new History(control_number, control_date, control_price));
+                    //Instantiate variables
+                    int rate = 0;
+                    String comment = "";
+
+                    GetRatingAsyncTask getRatingAsyncTask = new GetRatingAsyncTask();
+                    try {
+                        String r = getRatingAsyncTask.execute(id).get();        //get ratings of a booking based on booking id
+
+                        JSONObject rating = new JSONObject(r);
+
+                        if(rating.isNull("rate") && rating.isNull("comment")) {
+                            //if rating does not contain a rate and comment for a booking, set the rating of history item to 0
+                            // and blank string for comment
+                            historyList.add(new History(id, control_number, control_date, control_price, 0, ""));
+                        } else {
+                            rate = rating.getInt("rate");
+                            comment = rating.getString("comment");
+
+                            historyList.add(new History(id, control_number, control_date, control_price, rate, comment));
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (JSONException e) {

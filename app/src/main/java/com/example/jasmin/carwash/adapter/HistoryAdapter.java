@@ -12,6 +12,8 @@ import com.example.jasmin.carwash.model.History;
 
 import java.util.ArrayList;
 
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
 /**
  * This will be used to handle each item in the Recycler View
  */
@@ -28,12 +30,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     /*A class for setting handlers of the 'history_item' view*/
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
+        me.zhanghai.android.materialratingbar.MaterialRatingBar rb;
         TextView tvControlNumberField, tvDateField, tvPriceField;
         View container;
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
 
+            rb = (MaterialRatingBar) itemView.findViewById(R.id.rbRating);
             tvControlNumberField = (TextView) itemView.findViewById(R.id.tvControlNumField);
             tvDateField = (TextView) itemView.findViewById(R.id.tvDateField);
             tvPriceField = (TextView) itemView.findViewById(R.id.tvPriceField);
@@ -61,6 +65,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.tvDateField.setText(String.valueOf(history.getDate()));
         //Set the Price of the 'history_item' view
         holder.tvPriceField.setText(String.valueOf(history.getPrice()) + " SAR");
+
+        holder.rb.setRating(history.getRatings());
     }
 
 
