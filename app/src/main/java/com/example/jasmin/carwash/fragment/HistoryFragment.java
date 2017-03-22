@@ -129,7 +129,7 @@ public class HistoryFragment extends Fragment {
                     continue;
                 } finally {
                     //Instantiate variables
-                    int rate = 0;
+                    float rate = 0f;
                     String comment = "";
 
                     GetRatingAsyncTask getRatingAsyncTask = new GetRatingAsyncTask();   //Get ratings and comments of a booking_id

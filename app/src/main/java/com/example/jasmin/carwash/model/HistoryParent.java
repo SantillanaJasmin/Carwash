@@ -15,11 +15,11 @@ public class HistoryParent implements Parent<HistoryChild> {
 
     private int id, number;
     private double price;
-    private int ratings;
+    private float ratings;
     private Date date;
     private String comment;
 
-    public HistoryParent(int id, int trans_number, Date date, double trans_price, int ratings, List<HistoryChild> list) {
+    public HistoryParent(int id, int trans_number, Date date, double trans_price, float ratings, List<HistoryChild> list) {
         this.id = id;
         this.number = trans_number;
         this.date = date;
@@ -68,11 +68,11 @@ public class HistoryParent implements Parent<HistoryChild> {
         this.date = date;
     }
 
-    public int getRatings() {
+    public float getRatings() {
         return ratings;
     }
 
-    public void setRatings(int ratings) {
+    public void setRatings(float ratings) {
         this.ratings = ratings;
     }
 
