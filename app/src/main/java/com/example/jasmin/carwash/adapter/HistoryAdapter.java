@@ -27,7 +27,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         this.historyList = list;
     }
 
-    /*A class for setting handlers of the 'history_item' view*/
+    /*A class for setting handlers of the 'history_item_parent' view*/
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
         me.zhanghai.android.materialratingbar.MaterialRatingBar rb;
@@ -43,13 +43,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             tvPriceField = (TextView) itemView.findViewById(R.id.tvPriceField);
 
             container = itemView.findViewById(R.id.container);
+
+            rb.setEnabled(false);
         }
     }
 
     @Override
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Inflate the layout 'history_item' which will be view of each item in the Recycler View
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_item, parent, false);
+        //Inflate the layout 'history_item_parent' which will be view of each item in the Recycler View
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_item_parent, parent, false);
 
         return new HistoryViewHolder(v);
     }
@@ -59,11 +61,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         //Get History item for the History List
         History history = historyList.get(position);
 
-        //Set the Control Number of the 'history_item' view
+        //Set the Control Number of the 'history_item_parent' view
         holder.tvControlNumberField.setText(String.valueOf(history.getTrans_number()));
-        //Set the Date of the 'history_item' view
+        //Set the Date of the 'history_item_parent' view
         holder.tvDateField.setText(String.valueOf(history.getDate()));
-        //Set the Price of the 'history_item' view
+        //Set the Price of the 'history_item_parent' view
         holder.tvPriceField.setText(String.valueOf(history.getPrice()) + " SAR");
 
         holder.rb.setRating(history.getRatings());
