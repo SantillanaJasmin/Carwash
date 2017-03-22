@@ -9,7 +9,7 @@ import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.model.HistoryChild;
 
 /**
- * Created by Jasmin on 3/22/2017.
+ * Class for creating handlers of HistoryChild elements
  */
 public class HistoryChildViewHolder extends ChildViewHolder {
 

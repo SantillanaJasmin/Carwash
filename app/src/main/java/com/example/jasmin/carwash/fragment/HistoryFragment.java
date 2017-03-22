@@ -1,27 +1,19 @@
 package com.example.jasmin.carwash.fragment;
 
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
-import com.example.jasmin.carwash.adapter.HistoryAdapter;
 import com.example.jasmin.carwash.adapter.HistoryExpandableAdapter;
 import com.example.jasmin.carwash.asynctask.GetHistoryAsyncTask;
 import com.example.jasmin.carwash.asynctask.GetRatingAsyncTask;
-import com.example.jasmin.carwash.model.History;
 import com.example.jasmin.carwash.model.HistoryChild;
 import com.example.jasmin.carwash.model.HistoryParent;
 
@@ -29,7 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,18 +30,14 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HistoryFragment extends Fragment {
 
-    ArrayList<HistoryParent> historyList;
-    HistoryExpandableAdapter historyAdapter;
-    RecyclerView rvHistory;
+    private ArrayList<HistoryParent> historyList;
+    private HistoryExpandableAdapter historyAdapter;
+    private RecyclerView rvHistory;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -63,33 +50,24 @@ public class HistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
-        //Instantiate the History list where the history items will be stored
+        //Instantiate the History Parent list where the history items will be stored
         historyList = new ArrayList<>();
 
         //Handler for the Recycler View
         rvHistory = (RecyclerView) v.findViewById(R.id.rvHistory);
 
         //Get booking history from the database and store the result to String 's'
-//        GetHistoryAsyncTask getHistoryAsyncTask = new GetHistoryAsyncTask(getActivity());
-//        try {
-//            String s = getHistoryAsyncTask.execute().get();
-//            populateHistoryRecyclerView(s);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-
-        HistoryParent historyParent1 = new HistoryParent(1, 123456, new Date(), 120.00, 4, Arrays.asList(new HistoryChild("It is good!")));
-        HistoryParent historyParent2 = new HistoryParent(2, 321456, new Date(), 200.00, 3, Arrays.asList(new HistoryChild("Saks lang")));
-        HistoryParent historyParent3 = new HistoryParent(3, 213645, new Date(), 475.00, 5, Arrays.asList(new HistoryChild("Excellent!!!")));
-
-        historyList.add(historyParent1);
-        historyList.add(historyParent2);
-        historyList.add(historyParent3);
+        GetHistoryAsyncTask getHistoryAsyncTask = new GetHistoryAsyncTask(getActivity());
+        try {
+            String s = getHistoryAsyncTask.execute().get();
+            populateHistoryRecyclerView(s);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         //Instantiate History Adapter and pass the History List
-//        historyAdapter = new HistoryAdapter(getActivity(), historyList);
         historyAdapter = new HistoryExpandableAdapter(getActivity(), historyList);
 
         //Set Adapter of Recycler View
@@ -117,7 +95,7 @@ public class HistoryFragment extends Fragment {
             //Iterate through the node
             for(int i = 0; i < historyArray.length(); i++) {
                 //Instantiate variables
-                int id = 0;                 //booking id
+                int booking_id = 0;                 //booking id
                 int control_number = 0;     //control number
                 double control_price = 0;   //total
                 String date = "";
@@ -128,7 +106,7 @@ public class HistoryFragment extends Fragment {
 
                 try {
                     //Get booking id
-                    id = history.getInt("id");
+                    booking_id = history.getInt("id");
 
                     //Get control number
                     control_number = history.getInt("control_no");
@@ -154,23 +132,19 @@ public class HistoryFragment extends Fragment {
                     int rate = 0;
                     String comment = "";
 
-                    GetRatingAsyncTask getRatingAsyncTask = new GetRatingAsyncTask();
+                    GetRatingAsyncTask getRatingAsyncTask = new GetRatingAsyncTask();   //Get ratings and comments of a booking_id
                     try {
-                        String r = getRatingAsyncTask.execute(id).get();        //get ratings of a booking based on booking id
+                        String r = getRatingAsyncTask.execute(booking_id).get();
 
                         JSONObject rating = new JSONObject(r);
 
-                        if(rating.isNull("rate") && rating.isNull("comment")) {
-                            //if rating does not contain a rate and comment for a booking, set the rating of history item to 0
-                            // and blank string for comment
-//                            historyList.add(new History(id, control_number, control_date, control_price, 0, ""));
-                            historyList.add(new HistoryParent(id, control_number, control_date, control_price, 0, Arrays.asList(new HistoryChild(""))));
-                        } else {
+                        if(!rating.isNull("rate") || !rating.isNull("comment")) {       //check if result string has rate and comment items
                             rate = rating.getInt("rate");
                             comment = rating.getString("comment");
 
-//                            historyList.add(new History(id, control_number, control_date, control_price, rate, comment));
-                            historyList.add(new HistoryParent(id, control_number, control_date, control_price, 0, Arrays.asList(new HistoryChild(comment))));
+                            historyList.add(new HistoryParent(booking_id, control_number, control_date, control_price, rate, Arrays.asList(new HistoryChild(comment))));
+                        } else {                                                        //if none, set rate to 0 and comment to empty string
+                            historyList.add(new HistoryParent(booking_id, control_number, control_date, control_price, 0, Arrays.asList(new HistoryChild(""))));
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();

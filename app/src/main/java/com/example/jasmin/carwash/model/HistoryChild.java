@@ -1,7 +1,7 @@
 package com.example.jasmin.carwash.model;
 
 /**
- * Created by Jasmin on 3/22/2017.
+ * Model for History comments that will be visible when arrow down button is pressed in HistoryParent
  */
 public class HistoryChild {
 

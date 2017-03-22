@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Jasmin on 3/22/2017.
+ * Model for History details that will be visible in the recycler view
  */
 public class HistoryParent implements Parent<HistoryChild> {
 

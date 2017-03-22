@@ -14,25 +14,9 @@ import com.example.jasmin.carwash.model.HistoryParent;
 import java.util.List;
 
 /**
- * Created by Jasmin on 3/22/2017.
+ * Adapter for Expandable Recycler View
  */
 public class HistoryExpandableAdapter extends ExpandableRecyclerAdapter<HistoryParent, HistoryChild, HistoryParentViewHolder, HistoryChildViewHolder> {
-    /**
-     * Primary constructor. Sets up {@link #mParentList} and {@link #mFlatItemList}.
-     * <p/>
-     * Any changes to {@link #mParentList} should be made on the original instance, and notified via
-     * {@link #notifyParentInserted(int)}
-     * {@link #notifyParentRemoved(int)}
-     * {@link #notifyParentChanged(int)}
-     * {@link #notifyParentRangeInserted(int, int)}
-     * {@link #notifyChildInserted(int, int)}
-     * {@link #notifyChildRemoved(int, int)}
-     * {@link #notifyChildChanged(int, int)}
-     * methods and not the notify methods of RecyclerView.Adapter.
-     *
-     * @param parentList List of all parents to be displayed in the RecyclerView that this
-     *                   adapter is linked to
-     */
 
     private Context context;
     private List<HistoryParent> parentList;
