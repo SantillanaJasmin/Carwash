@@ -61,7 +61,7 @@ public class MyCarsFragment extends Fragment {
             e.printStackTrace();
         }
         //Instantiate Car Adapter and pass the Car list
-        carAdapter = new CarAdapter(carList);
+        carAdapter = new CarAdapter(getActivity(), carList);
 
         //Set Adapter of Recycler View
         rvCars.setAdapter(carAdapter);
@@ -72,7 +72,6 @@ public class MyCarsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent=new Intent(getActivity(), AddCarActivity.class);
                 startActivityForResult(intent, REQUEST_CAR);
             }
@@ -95,20 +94,16 @@ public class MyCarsFragment extends Fragment {
             JSONArray carArray = jsonObject.getJSONArray("cars");
 
             for(int i = 0; i < carArray.length(); i++) {
-                String name = "";
-                String plate = "";
-                String location = "";
-                double lati, longi = 0;
-
                 JSONObject car = carArray.getJSONObject(i);
 
-                name = car.getString("name");
-                plate = car.getString("plate");
-                location = car.getString("location");
-                lati = Double.valueOf(car.getString("lat"));
-                longi = Double.valueOf(car.getString("long"));
+                int id = car.getInt("id");
+                String name = car.getString("name");
+                String plate = car.getString("plate");
+                String location = car.getString("location");
+                double lati = Double.valueOf(car.getString("lat"));
+                double longi = Double.valueOf(car.getString("long"));
 
-                carList.add(new Car(name, plate, location, lati, longi));
+                carList.add(new Car(id, name, plate, location, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();
