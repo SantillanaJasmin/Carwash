@@ -40,7 +40,7 @@ public class GetHistoryAsyncTask extends AsyncTask<Void, Void, String> {
     //Fetching the history items from the database. OkHttpClient is used for faster retrieving of data
     @Override
     protected String doInBackground(Void... params) {
-        String url = "http://192.168.2.52:3004/carwash/history/1";
+        String url = "http://192.168.2.52:3004/carwash/history/5";
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();

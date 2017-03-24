@@ -1,10 +1,6 @@
 package com.example.jasmin.carwash.fragment;
 
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -15,35 +11,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jasmin.carwash.R;
-import com.example.jasmin.carwash.adapter.HistoryAdapter;
+import com.example.jasmin.carwash.adapter.HistoryExpandableAdapter;
 import com.example.jasmin.carwash.asynctask.GetHistoryAsyncTask;
-import com.example.jasmin.carwash.model.History;
+import com.example.jasmin.carwash.asynctask.GetRatingAsyncTask;
+import com.example.jasmin.carwash.model.HistoryChild;
+import com.example.jasmin.carwash.model.HistoryParent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HistoryFragment extends Fragment {
 
-    ArrayList<History> historyList;
-    HistoryAdapter historyAdapter;
-    RecyclerView rvHistory;
+    private ArrayList<HistoryParent> historyList;
+    private HistoryExpandableAdapter historyAdapter;
+    private RecyclerView rvHistory;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -56,7 +50,8 @@ public class HistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
-        //Instantiate the list where the history items will be stored
+        //Instantiate the History Parent list where the history items will be stored
+
         historyList = new ArrayList<>();
 
         //Handler for the Recycler View
@@ -74,7 +69,7 @@ public class HistoryFragment extends Fragment {
         }
 
         //Instantiate History Adapter and pass the History List
-        historyAdapter = new HistoryAdapter(getActivity(), historyList);
+        historyAdapter = new HistoryExpandableAdapter(getActivity(), historyList);
 
         //Set Adapter of Recycler View
         rvHistory.setAdapter(historyAdapter);
@@ -101,15 +96,19 @@ public class HistoryFragment extends Fragment {
             //Iterate through the node
             for(int i = 0; i < historyArray.length(); i++) {
                 //Instantiate variables
-                int control_number = 0;
-                double control_price = 0;
+                int booking_id = 0;                 //booking id
+                int control_number = 0;     //control number
+                double control_price = 0;   //total
                 String date = "";
-                Date control_date = null;
+                Date control_date = null;   //schedule
 
                 //Get JSON Object from the JSON Array 'bookings'
                 JSONObject history = historyArray.getJSONObject(i);
 
                 try {
+                    //Get booking id
+                    booking_id = history.getInt("id");
+
                     //Get control number
                     control_number = history.getInt("control_no");
 
@@ -130,8 +129,29 @@ public class HistoryFragment extends Fragment {
                     e.printStackTrace();
                     continue;
                 } finally {
-                    //Create new History item and add it to the History list
-                    historyList.add(new History(control_number, control_date, control_price));
+                    //Instantiate variables
+                    float rate = 0f;
+                    String comment = "";
+
+                    GetRatingAsyncTask getRatingAsyncTask = new GetRatingAsyncTask();   //Get ratings and comments of a booking_id
+                    try {
+                        String r = getRatingAsyncTask.execute(booking_id).get();
+
+                        JSONObject rating = new JSONObject(r);
+
+                        if(!rating.isNull("rate") || !rating.isNull("comment")) {       //check if result string has rate and comment items
+                            rate = rating.getInt("rate");
+                            comment = rating.getString("comment");
+
+                            historyList.add(new HistoryParent(booking_id, control_number, control_date, control_price, rate, Arrays.asList(new HistoryChild(comment))));
+                        } else {                                                        //if none, set rate to 0 and comment to empty string
+                            historyList.add(new HistoryParent(booking_id, control_number, control_date, control_price, 0, Arrays.asList(new HistoryChild(""))));
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (JSONException e) {
