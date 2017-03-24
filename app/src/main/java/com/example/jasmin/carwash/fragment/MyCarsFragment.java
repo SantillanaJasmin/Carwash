@@ -2,10 +2,7 @@ package com.example.jasmin.carwash.fragment;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.activity.AddCarActivity;
@@ -27,13 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +63,7 @@ public class MyCarsFragment extends Fragment {
             e.printStackTrace();
         }
         //Instantiate Car Adapter and pass the Car list
-        carAdapter = new CarAdapter(carList);
+        carAdapter = new CarAdapter(getActivity(), carList);
 
         //Set Adapter of Recycler View
         rvCars.setAdapter(carAdapter);
@@ -83,7 +74,6 @@ public class MyCarsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent=new Intent(getActivity(), AddCarActivity.class);
                 startActivityForResult(intent, REQUEST_CAR);
             }
@@ -106,20 +96,16 @@ public class MyCarsFragment extends Fragment {
             JSONArray carArray = jsonObject.getJSONArray("cars");
 
             for(int i = 0; i < carArray.length(); i++) {
-                String name = "";
-                String plate = "";
-                String location = "";
-                double lati, longi = 0;
-
                 JSONObject car = carArray.getJSONObject(i);
 
-                name = car.getString("name");
-                plate = car.getString("plate");
-                location = car.getString("location");
-                lati = Double.valueOf(car.getString("lat"));
-                longi = Double.valueOf(car.getString("long"));
+                int id = car.getInt("id");
+                String name = car.getString("name");
+                String plate = car.getString("plate");
+                String location = car.getString("location");
+                double lati = Double.valueOf(car.getString("lat"));
+                double longi = Double.valueOf(car.getString("long"));
 
-                carList.add(new Car(name, plate, location, lati, longi));
+                carList.add(new Car(id, name, plate, location, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();

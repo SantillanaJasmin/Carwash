@@ -57,6 +57,7 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         try {
             array.put(0, carDetails);
         } catch (JSONException e) {
