@@ -138,6 +138,7 @@ public class MyCarsFragment extends Fragment {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
+                } finally {
                     carAdapter.notifyDataSetChanged();
                 }
             }
