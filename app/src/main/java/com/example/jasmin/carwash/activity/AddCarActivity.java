@@ -1,14 +1,20 @@
 package com.example.jasmin.carwash.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.asynctask.AddCarAsyncTask;
@@ -18,6 +24,19 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class AddCarActivity extends AppCompatActivity {
 
@@ -29,20 +48,18 @@ public class AddCarActivity extends AppCompatActivity {
     private static final int PLACE_PICKER_REQUEST = 1000;
     private GoogleApiClient mClient;
 
-    String location;
+    String name, plate, location;
     double lati, longi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add_car);
-
+//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         etModel = (EditText) findViewById(R.id.etCarModel);
-        etType = (EditText) findViewById(R.id.etCarType);
         etPlate = (EditText) findViewById(R.id.etCarPlate);
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -60,11 +77,10 @@ public class AddCarActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vp) {
-                String model = etModel.getText().toString();
-                String type = etType.getText().toString();
-                String plate = etPlate.getText().toString();
+                name = etModel.getText().toString();
+                plate = etPlate.getText().toString();
 
-                new AddCarAsyncTask(getBaseContext()).execute(model, type, plate,  location, String.valueOf(lati), String.valueOf(longi));
+                new AddCarAsyncTask(getBaseContext()).execute(name, plate, location, String.valueOf(lati), String.valueOf(longi));
 
                 Intent result = new Intent();
                 setResult(RESULT_OK, result);

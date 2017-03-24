@@ -1,11 +1,7 @@
 package com.example.jasmin.carwash.fragment;
 
-
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -26,13 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +39,6 @@ public class MyCarsFragment extends Fragment {
     public MyCarsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,25 +90,21 @@ public class MyCarsFragment extends Fragment {
 
     public void populateCarsRecyclerView(String s) {
         try {
-//            JSONObject jsonObject = new JSONObject(s);
+            JSONObject jsonObject = new JSONObject(s);
 
-            // Getting JSON Array 'bookings' node
-//            JSONArray carArray = jsonObject.getJSONArray("cars");
-
-            JSONArray carArray = new JSONArray(s);
+            JSONArray carArray = jsonObject.getJSONArray("cars");
 
             for(int i = 0; i < carArray.length(); i++) {
+                String name = "";
+                double lati, longi = 0;
+
                 JSONObject car = carArray.getJSONObject(i);
 
-                String model = car.getString("model");
-                String type = car.getString("type");
-                String plate = car.getString("plate");
-                String location = car.getString("location");
-                double lati = car.getDouble("lati");
-                double longi = car.getDouble("longi");
+                name = car.getString("name");
+                lati = Double.valueOf(car.getString("lat"));
+                longi = Double.valueOf(car.getString("long"));
 
-                carList.add(new Car(model, type, plate, location, lati, longi));
-//                carList.add(new Car(model, lati, longi));
+                carList.add(new Car(name, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,7 +117,6 @@ public class MyCarsFragment extends Fragment {
         if (requestCode == REQUEST_CAR) {
             if (resultCode == Activity.RESULT_OK) {
                 carList.clear();
-
                 GetCarsAsyncTask getCarsAsyncTask = new GetCarsAsyncTask(getActivity());
                 try {
                     String s = getCarsAsyncTask.execute().get();
@@ -140,7 +125,6 @@ public class MyCarsFragment extends Fragment {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
-
                     carAdapter.notifyDataSetChanged();
                 }
             }

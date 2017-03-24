@@ -3,19 +3,27 @@ package com.example.jasmin.carwash.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
  * Created by Jasmin on 3/6/2017.
- *
- * A class for adding a car item to the database
  */
 public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
+
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
     Context mContext;
 
@@ -28,25 +36,38 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
         super.onPreExecute();
     }
 
-    //Adding a car item the database is done in the background. OkHttpClient is used for faster retrieving of data
     @Override
     protected Void doInBackground(String... params) {
-        String url = "http://192.168.2.214:8080/CarwashServer/AddCarServlet";
+        String url = "http://192.168.2.52:3004/carwash/car/create";
+
+        JSONArray array = new JSONArray();          //create json array for the car details
+        JSONObject carDetails = new JSONObject();   //json object for car details
+        JSONObject car = new JSONObject();          //json object containing "cars" and "user_id"
+        try {
+            carDetails.put("name", params[0]);
+            carDetails.put("plate", params[1]);
+            carDetails.put("location", params[2]);
+            carDetails.put("lat", params[3]);
+            carDetails.put("long", params[4]);
+
+            array.put(0, carDetails);
+
+            car.put("cars", array);
+            car.put("user_id", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            array.put(0, carDetails);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
 
-        //Add parameters to the request
-        RequestBody requestBody = new FormBody.Builder()
-                .add("model", params[0])
-                .add("type", params[1])
-                .add("plate", params[2])
-                .add("location", params[3])
-                .add("lati", params[4])
-                .add("longi", params[5])
-                .build();
+        RequestBody requestBody = RequestBody.create(JSON, car.toString());
 
-        //Request to server with the corresponding parameters
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
