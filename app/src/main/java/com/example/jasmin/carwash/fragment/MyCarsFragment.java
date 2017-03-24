@@ -42,11 +42,9 @@ public class MyCarsFragment extends Fragment {
 
     public static final int REQUEST_CAR = 0;
 
-    ArrayList<Car> carList;
-    CarAdapter carAdapter;
-    RecyclerView rvCars;
-
-    String sResult;
+    private ArrayList<Car> carList;
+    private CarAdapter carAdapter;
+    private RecyclerView rvCars;
 
     public MyCarsFragment() {
         // Required empty public constructor
@@ -109,15 +107,19 @@ public class MyCarsFragment extends Fragment {
 
             for(int i = 0; i < carArray.length(); i++) {
                 String name = "";
+                String plate = "";
+                String location = "";
                 double lati, longi = 0;
 
                 JSONObject car = carArray.getJSONObject(i);
 
                 name = car.getString("name");
+                plate = car.getString("plate");
+                location = car.getString("location");
                 lati = Double.valueOf(car.getString("lat"));
                 longi = Double.valueOf(car.getString("long"));
 
-                carList.add(new Car(name, lati, longi));
+                carList.add(new Car(name, plate, location, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();

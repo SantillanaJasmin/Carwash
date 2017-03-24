@@ -34,9 +34,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         Car car = carList.get(position);
 
         holder.tvNameField.setText(car.getName());
-        holder.tvLatField.setText("Lat: " + String.valueOf(car.getLati()));
-        holder.tvLongField.setText("Long: " + String.valueOf(car.getLongi()));
-
+        holder.tvPlateField.setText("Plate: " + car.getPlate());
+        holder.tvLocationField.setText(car.getLocation());
     }
 
     @Override
@@ -47,7 +46,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public class CarViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCar;
-        TextView tvNameField, tvLatField, tvLongField;
+        TextView tvNameField, tvPlateField, tvLocationField;
         View container;
 
          public CarViewHolder(View itemView) {
@@ -55,8 +54,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
              ivCar = (ImageView) itemView.findViewById(R.id.ivCar);
              tvNameField = (TextView) itemView.findViewById(R.id.tvNameField);
-             tvLatField = (TextView) itemView.findViewById(R.id.tvLatField);
-             tvLongField = (TextView) itemView.findViewById(R.id.tvLongField);
+             tvPlateField = (TextView) itemView.findViewById(R.id.tvPlateField);
+             tvLocationField = (TextView) itemView.findViewById(R.id.tvLocationField);
 
              container = itemView.findViewById(R.id.carContainer);
          }

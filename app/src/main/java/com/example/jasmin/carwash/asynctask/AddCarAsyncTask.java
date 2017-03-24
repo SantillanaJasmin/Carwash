@@ -53,7 +53,7 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
             array.put(0, carDetails);
 
             car.put("cars", array);
-            car.put("user_id", 1);
+            car.put("user_id", 2);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -66,13 +66,6 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
         //Instantiate client
         OkHttpClient client = new OkHttpClient();
 
-//        RequestBody requestBody = new FormBody.Builder()
-//                .add("model", params[0])
-//                .add("plate", params[1])
-//                .add("location", params[2])
-//                .add("lati", params[3])
-//                .add("longi", params[4])
-//                .build();
         RequestBody requestBody = RequestBody.create(JSON, car.toString());
 
         Request request = new Request.Builder()
