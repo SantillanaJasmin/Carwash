@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.asynctask.DeleteCarAsyncTask;
+import com.example.jasmin.carwash.database.CarDBHelper;
 import com.example.jasmin.carwash.model.Car;
 
 import org.json.JSONException;
@@ -43,8 +46,34 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(CarViewHolder holder, final int position) {
+    public void onBindViewHolder(final CarViewHolder holder, final int position) {
         final Car car = carList.get(position);
+
+//        holder.container.setTag(car.getId());
+        if(car.isDefault()) {
+            holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDefaultCar));
+        }
+
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CarDBHelper carDBHelper = new CarDBHelper(context);
+
+                if(car.isDefault()) {
+                    carList.get(position).setIsDefault(false);
+                    holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.cardview_light_background));
+
+                    carDBHelper.deleteDefaultCar(car);
+                } else {
+                    carList.get(position).setIsDefault(true);
+                    holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDefaultCar));
+
+                    carDBHelper.addDefaultCar(car);
+                }
+
+                Log.d("Default Car", String.valueOf(carDBHelper.getCarCount()));
+            }
+        });
 
         holder.tvNameField.setText(car.getName());
         holder.tvPlateField.setText("Plate: " + car.getPlate());

@@ -53,7 +53,7 @@ public class AddCarAsyncTask extends AsyncTask<String, Void, Void> {
             array.put(0, carDetails);
 
             car.put("cars", array);
-            car.put("user_id", 2);
+            car.put("user_id", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }

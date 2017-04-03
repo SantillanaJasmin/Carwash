@@ -9,14 +9,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jasmin.carwash.R;
 import com.example.jasmin.carwash.activity.AddCarActivity;
 import com.example.jasmin.carwash.adapter.CarAdapter;
 import com.example.jasmin.carwash.asynctask.GetCarsAsyncTask;
+import com.example.jasmin.carwash.database.CarDBHelper;
 import com.example.jasmin.carwash.model.Car;
 
 import org.json.JSONArray;
@@ -74,7 +77,7 @@ public class MyCarsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), AddCarActivity.class);
+                Intent intent = new Intent(getActivity(), AddCarActivity.class);
                 startActivityForResult(intent, REQUEST_CAR);
             }
         });
@@ -105,7 +108,7 @@ public class MyCarsFragment extends Fragment {
                 double lati = Double.valueOf(car.getString("lat"));
                 double longi = Double.valueOf(car.getString("long"));
 
-                carList.add(new Car(id, name, plate, location, lati, longi));
+                carList.add(new Car(id, false, name, plate, location, lati, longi));
             }
         } catch (JSONException e) {
             e.printStackTrace();
