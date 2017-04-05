@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -64,14 +65,17 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
                     holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.cardview_light_background));
 
                     carDBHelper.deleteDefaultCar(car);
+                    Log.d("Default Car", String.valueOf(carDBHelper.getCarCount()));
                 } else {
                     carList.get(position).setIsDefault(true);
                     holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDefaultCar));
 
                     carDBHelper.addDefaultCar(car);
-                }
 
-                Log.d("Default Car", String.valueOf(carDBHelper.getCarCount()));
+                    Car defcar = carDBHelper.getCar();
+                    Log.d("Default Car", "Name: " + defcar.getName() + "\tPlate: " + defcar.getPlate());
+                    Log.d("Default Car", String.valueOf(carDBHelper.getCarCount()));
+                }
             }
         });
 

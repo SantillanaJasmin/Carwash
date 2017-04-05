@@ -64,10 +64,15 @@ public class CarDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(Car.TABLE_NAME, null, null, null, null, null, null);
 
-        Car car = new Car(c.getInt(c.getColumnIndex(Car.COLUMN_ID)), Boolean.parseBoolean(c.getString(c.getColumnIndex(Car.COLUMN_ISDEFAULT))),
-                c.getString(c.getColumnIndex(Car.COLUMN_NAME)),c.getString(c.getColumnIndex(Car.COLUMN_PLATE)),
-                c.getString(c.getColumnIndex(Car.COLUMN_LOCATION)), Double.parseDouble(c.getString(c.getColumnIndex(Car.COLUMN_LATI))),
-                Double.parseDouble(c.getString(c.getColumnIndex(Car.COLUMN_LONGI))));
+        Car car = null;
+        if(c.moveToFirst()) {
+            do {
+                car = new Car(c.getInt(c.getColumnIndex(Car.COLUMN_ID)), Boolean.parseBoolean(c.getString(c.getColumnIndex(Car.COLUMN_ISDEFAULT))),
+                        c.getString(c.getColumnIndex(Car.COLUMN_NAME)),c.getString(c.getColumnIndex(Car.COLUMN_PLATE)),
+                        c.getString(c.getColumnIndex(Car.COLUMN_LOCATION)), Double.parseDouble(c.getString(c.getColumnIndex(Car.COLUMN_LATI))),
+                        Double.parseDouble(c.getString(c.getColumnIndex(Car.COLUMN_LONGI))));
+            } while(c.moveToNext());
+        }
 
         return car;
     }
