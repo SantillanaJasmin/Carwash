@@ -46,6 +46,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         return new CarViewHolder(v);
     }
 
+    
+
     @Override
     public void onBindViewHolder(final CarViewHolder holder, final int position) {
         final Car car = carList.get(position);
